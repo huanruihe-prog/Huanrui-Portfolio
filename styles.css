@@ -134,7 +134,12 @@ body.is-fading .transition-logo { animation: logo-form-and-leave 2.2s cubic-bezi
 /* Touch layouts use a full crossfade: the black curtain covers the complete
    home page while the held first frame of the transition video fades in. */
 @media (pointer: coarse) {
+  .home .hero { min-height: 100svh; height: 100svh; aspect-ratio: auto; }
   .transition-video, .home .hero-copy { will-change: opacity; }
+  /* The transition source is a landscape video. Screen blending makes its
+     compressed black pixels merge into the page black on portrait devices,
+     leaving only the bright logo animation visible. */
+  .transition-video { mix-blend-mode: screen; }
   body.is-fading .fade-curtain { transition-duration: 1.3s; }
   body.is-fading .hero-copy { opacity: 0; transition: opacity 1.3s ease; }
   body.is-fading .title-letter:not(.letter-h):not(.letter-s),
@@ -145,7 +150,6 @@ body.is-fading .transition-logo { animation: logo-form-and-leave 2.2s cubic-bezi
 /* An iPad in portrait is taller than a desktop 16:9 canvas. Use the mobile
    full-height composition so the interactive background fills the screen. */
 @media (pointer: coarse) and (orientation: portrait) {
-  .home .hero { min-height: 100svh; height: 100svh; aspect-ratio: auto; }
   .home .hero-copy { width: calc(100% - 40px); top: 45%; }
   .home .hero h1 { font-size: clamp(3.6rem, 15.5vw, 5.2rem); }
   .home .racetrack { width: min(48vw, 170px); height: 50px; top: 72%; bottom: auto; }
