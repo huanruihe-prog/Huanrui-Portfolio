@@ -129,73 +129,20 @@ body.is-fading .transition-logo { animation: logo-form-and-leave 2.2s cubic-bezi
   .portfolio-page .category-grid { grid-template-columns: 1fr; min-height: 100svh; padding: 65px 10px 10px; }
   .portfolio-page .glass-card { min-height: 42svh; }
   .home-link { top: 6px; left: 14px; }
-
-  /* iOS draws an inline video in a separate compositor layer. Let its first
-     frame and the original H/S overlap briefly so sub-pixel rounding cannot
-     appear as a visible one-pixel jump at the hand-off. */
-  .transition-video, .home .hero-copy { will-change: opacity; }
-  body.is-video-playing:not(.is-video-ending) .transition-video { transition: opacity .15s ease-out; }
-  body.is-video-playing .hero-copy { transition: opacity .15s ease-out; }
-
 }
 
-/* On touch-first screens, a brief white halo focuses the eye on the retained
-   initials at the exact moment the transition video takes over. */
+/* Touch layouts use a full crossfade: the black curtain covers the complete
+   home page while the held first frame of the transition video fades in. */
 @media (max-width: 1024px) {
-  body.is-fading .title-letter.letter-h,
-  body.is-fading .title-letter.letter-s {
-    animation: hs-handoff-flash 1s cubic-bezier(.16, 1, .3, 1) both;
-  }
-
-  /* Keep an airy halo over the video for its first second. The copies are
-     deliberately almost transparent: only their diffuse white edge remains. */
-  body.is-video-playing .retained-letter-layer { z-index: 11; }
-  body.is-video-playing .retained-letter {
-    color: rgba(255,255,255,.035);
-    opacity: 1 !important;
-    animation: hs-video-halo 1s cubic-bezier(.16, 1, .3, 1) both !important;
-  }
+  .transition-video, .home .hero-copy { will-change: opacity; }
+  body.is-fading .hero-copy { opacity: 0; transition: opacity 1s ease; }
+  body.is-video-playing:not(.is-video-ending) .transition-video { transition: opacity 1s ease; }
 }
 
-@keyframes hs-handoff-flash {
-  0%, 22% {
-    color: inherit;
-    text-shadow: 0 0 0 rgba(255, 255, 255, 0);
-    filter: brightness(1);
-  }
-  52% {
-    color: #fff;
-    text-shadow: 0 0 3px rgba(255,255,255,.98), 0 0 12px rgba(255,255,255,.74), 0 0 26px rgba(255,255,255,.32);
-    filter: brightness(1.22);
-  }
-  100% {
-    color: inherit;
-    text-shadow: 0 0 2px rgba(255,255,255,.18);
-    filter: brightness(1);
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
   }
 }
-
-@keyframes hs-video-halo {
-  0% {
-    opacity: 0;
-    text-shadow: 0 0 0 rgba(255,255,255,0);
-    filter: brightness(1);
-  }
-  16% {
-    opacity: .92;
-    text-shadow: 0 0 4px rgba(255,255,255,.96), 0 0 15px rgba(255,255,255,.66), 0 0 34px rgba(255,255,255,.28);
-    filter: brightness(1.18);
-  }
-  62% {
-    opacity: .68;
-    text-shadow: 0 0 4px rgba(255,255,255,.72), 0 0 18px rgba(255,255,255,.46), 0 0 38px rgba(255,255,255,.18);
-    filter: brightness(1.08);
-  }
-  100% {
-    opacity: 0;
-    text-shadow: 0 0 5px rgba(255,255,255,0);
-    filter: brightness(1);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; } }

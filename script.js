@@ -17,6 +17,10 @@ const videoFrame = {
   s: { x: 1632.5, y: 971 },
 };
 
+function usesTouchCrossfade() {
+  return window.matchMedia('(max-width: 1024px)').matches;
+}
+
 function placeRetainedCopy(source, copy) {
   const bounds = source.getBoundingClientRect();
   const style = window.getComputedStyle(source);
@@ -87,13 +91,14 @@ function playVideoTransition() {
       revealed = true;
       document.body.classList.remove('is-video-warming');
       document.body.classList.add('is-video-playing');
-      // Let iOS paint the decoded frame 0 before playback advances to frame 1.
+      // Touch layouts keep this decoded first frame visible for the full
+      // crossfade; desktop keeps the shorter hand-off that is already aligned.
       window.setTimeout(() => {
         transitionVideo.play().catch(() => {
           document.body.classList.remove('is-video-playing');
           window.setTimeout(enterPortfolio, 3550);
         });
-      }, 100);
+      }, usesTouchCrossfade() ? 1000 : 100);
     };
 
     // Resetting after the initial hidden playback leaves the true video frame 0
@@ -127,9 +132,14 @@ function beginFadeTransition(event) {
     return;
   }
 
-  // The original black fade ends after one second; video then takes over from its
-  // matching H/S opening frame with no visible cut.
-  window.setTimeout(playVideoTransition, 1000);
+  if (usesTouchCrossfade()) {
+    // On phones and tablets, start decoding immediately so the first video
+    // frame can fade in alongside the complete home page fading out.
+    playVideoTransition();
+  } else {
+    // Desktop retains the established H/S hand-off.
+    window.setTimeout(playVideoTransition, 1000);
+  }
 }
 
 racetrack?.addEventListener('click', beginFadeTransition);
