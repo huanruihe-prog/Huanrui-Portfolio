@@ -123,5 +123,18 @@ body.is-fading .transition-logo { animation: logo-form-and-leave 2.2s cubic-bezi
 .portfolio-page .glass-card::before { display: none; }
 .portfolio-page .glass-card:hover { transform: none; border-color: rgba(245,248,250,.42); background: linear-gradient(135deg, rgba(255,255,255,.17), rgba(185,200,214,.07) 52%, rgba(255,255,255,.11)); }
 .portfolio-page .glass-card h2 { position: relative; z-index: 1; margin: 0; width: 100%; text-align: center; color: rgba(255,255,255,.92); font-size: clamp(2rem, 4.8vw, 5rem); font-weight: 500; letter-spacing: -.08em; line-height: .85; }
-@media (max-width: 680px) { .home .hero h1 { font-size: clamp(3.6rem, 15.5vw, 5.2rem); }.home .racetrack { width: min(48vw, 170px); height: 50px; top: 72%; bottom: auto; }.portfolio-page .category-grid { grid-template-columns: 1fr; min-height: 100svh; padding: 65px 10px 10px; }.portfolio-page .glass-card { min-height: 42svh; }.home-link { top: 6px; left: 14px; } }
+@media (max-width: 680px) {
+  .home .hero h1 { font-size: clamp(3.6rem, 15.5vw, 5.2rem); }
+  .home .racetrack { width: min(48vw, 170px); height: 50px; top: 72%; bottom: auto; }
+  .portfolio-page .category-grid { grid-template-columns: 1fr; min-height: 100svh; padding: 65px 10px 10px; }
+  .portfolio-page .glass-card { min-height: 42svh; }
+  .home-link { top: 6px; left: 14px; }
+
+  /* iOS draws an inline video in a separate compositor layer. Let its first
+     frame and the original H/S overlap briefly so sub-pixel rounding cannot
+     appear as a visible one-pixel jump at the hand-off. */
+  .transition-video, .home .hero-copy { will-change: opacity; }
+  body.is-video-playing:not(.is-video-ending) .transition-video { transition: opacity .15s ease-out; }
+  body.is-video-playing .hero-copy { transition: opacity .15s ease-out; }
+}
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; } }
