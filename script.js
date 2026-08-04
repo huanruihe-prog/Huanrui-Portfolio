@@ -1,4 +1,117 @@
 const canvas = document.querySelector('#tubes');
+const racetrack = document.querySelector('.racetrack');
+const transitionVideo = document.querySelector('.transition-video');
+const sourceLetters = {
+  h: document.querySelector('.letter-h'),
+  s: document.querySelector('.letter-s'),
+};
+const retainedCopies = {
+  h: document.querySelector('.retained-h'),
+  s: document.querySelector('.retained-s'),
+};
+const videoFrame = {
+  width: 3840,
+  height: 2160,
+  // Centres of the H and S in the exported 4K video's first frame.
+  h: { x: 1417, y: 760 },
+  s: { x: 1632.5, y: 971 },
+};
+
+function placeRetainedCopy(source, copy) {
+  const bounds = source.getBoundingClientRect();
+  const style = window.getComputedStyle(source);
+
+  copy.style.setProperty('--letter-x', `${bounds.left + bounds.width / 2}px`);
+  copy.style.setProperty('--letter-y', `${bounds.top + bounds.height / 2}px`);
+  copy.style.setProperty('--letter-font', style.font);
+  copy.style.setProperty('--letter-spacing', style.letterSpacing);
+  copy.style.setProperty('--letter-color', style.color);
+}
+
+function prepareRetainedLetters() {
+  placeRetainedCopy(sourceLetters.h, retainedCopies.h);
+  placeRetainedCopy(sourceLetters.s, retainedCopies.s);
+}
+
+function getCentre(bounds) {
+  return { x: bounds.left + bounds.width / 2, y: bounds.top + bounds.height / 2 };
+}
+
+function alignVideoToLetters() {
+  if (!transitionVideo || !sourceLetters.h || !sourceLetters.s) return;
+
+  const targetH = getCentre(sourceLetters.h.getBoundingClientRect());
+  const targetS = getCentre(sourceLetters.s.getBoundingClientRect());
+  const sourceDelta = { x: videoFrame.s.x - videoFrame.h.x, y: videoFrame.s.y - videoFrame.h.y };
+  const targetDelta = { x: targetS.x - targetH.x, y: targetS.y - targetH.y };
+  const sourceLengthSquared = sourceDelta.x ** 2 + sourceDelta.y ** 2;
+  const scale = (targetDelta.x * sourceDelta.x + targetDelta.y * sourceDelta.y) / sourceLengthSquared;
+
+  // A single scale preserves the logo animation. Translation then locks the
+  // video's H/S pair to the current layout instead of a fixed screen size.
+  const safeScale = Math.min(Math.max(scale, 0.08), 1.5);
+  const translateX = targetH.x - videoFrame.h.x * safeScale;
+  const translateY = targetH.y - videoFrame.h.y * safeScale;
+
+  transitionVideo.style.setProperty('--transition-scale', safeScale.toFixed(6));
+  transitionVideo.style.setProperty('--transition-x', `${translateX.toFixed(2)}px`);
+  transitionVideo.style.setProperty('--transition-y', `${translateY.toFixed(2)}px`);
+}
+
+function enterPortfolio() {
+  window.location.assign(racetrack.href);
+}
+
+function finishVideoTransition() {
+  if (!document.body.classList.contains('is-video-playing') || document.body.classList.contains('is-video-ending')) return;
+
+  // The browser keeps an ended video on its last frame. A short hold makes that
+  // final logo readable before it fades into the portfolio page's black entry.
+  window.setTimeout(() => {
+    document.body.classList.add('is-video-ending');
+    window.setTimeout(enterPortfolio, 720);
+  }, 140);
+}
+
+function playVideoTransition() {
+  if (!transitionVideo || !document.body.classList.contains('is-fading')) return;
+
+  document.body.classList.add('is-video-playing');
+  transitionVideo.currentTime = 0;
+  transitionVideo.play().catch(() => {
+    // Preserve the existing CSS transition if video playback is unavailable.
+    document.body.classList.remove('is-video-playing');
+    window.setTimeout(enterPortfolio, 3550);
+  });
+}
+
+function beginFadeTransition(event) {
+  if (document.body.classList.contains('is-fading')) return;
+
+  event.preventDefault();
+  prepareRetainedLetters();
+  alignVideoToLetters();
+  document.body.classList.add('is-fading');
+
+  if (!transitionVideo) {
+    window.setTimeout(enterPortfolio, 4550);
+    return;
+  }
+
+  // The original black fade ends after one second; video then takes over from its
+  // matching H/S opening frame with no visible cut.
+  window.setTimeout(playVideoTransition, 1000);
+}
+
+racetrack?.addEventListener('click', beginFadeTransition);
+transitionVideo?.addEventListener('ended', finishVideoTransition);
+window.addEventListener('pageshow', () => {
+  document.body.classList.remove('is-fading', 'is-video-playing', 'is-video-ending');
+  if (transitionVideo) {
+    transitionVideo.pause();
+    transitionVideo.currentTime = 0;
+  }
+});
 
 function randomColor() {
   const hue = Math.floor(Math.random() * 360);

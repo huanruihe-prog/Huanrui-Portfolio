@@ -9,20 +9,40 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=20260728-2" />
+    <link rel="stylesheet" href="styles.css?v=20260804-13" />
   </head>
   <body class="home">
     <main class="hero" aria-label="Huanrui Studio introduction">
       <canvas id="tubes" aria-hidden="true"></canvas>
       <div class="grain" aria-hidden="true"></div>
+      <div class="fade-curtain" aria-hidden="true"></div>
+      <video class="transition-video" muted playsinline preload="auto" aria-hidden="true">
+        <source src="assets/logo-transition.mp4" type="video/mp4" />
+      </video>
+      <div class="retained-letter-layer" aria-hidden="true">
+        <span class="retained-letter retained-h">H</span>
+        <span class="retained-letter retained-s">S</span>
+      </div>
+      <div class="h-construction" aria-hidden="true">
+        <span class="h-stroke h-stroke-left"></span>
+        <span class="h-stroke h-stroke-bridge"></span>
+        <span class="h-stroke h-stroke-right"></span>
+      </div>
+      <svg class="transition-logo" viewBox="700 380 600 325" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <path class="logo-shape" d="M 946.01 389.33 A 1.29 1.29 0.0 0 1 946.69 391.05 Q 927.86 433.11 907.87 478.36 Q 907.03 480.25 906.90 482.54 C 906.50 489.37 912.79 489.81 918.01 489.80 Q 1027.66 489.77 1030.54 489.81 Q 1040.72 489.98 1045.62 481.63 Q 1047.40 478.59 1053.33 465.60 Q 1075.18 417.69 1078.79 409.47 Q 1083.32 399.14 1086.86 395.74 Q 1093.73 389.14 1103.62 389.13 Q 1121.60 389.10 1180.75 389.15 Q 1181.67 389.15 1181.83 389.22 A 1.60 1.60 0.0 0 1 1182.69 391.37 Q 1134.49 497.42 1087.50 604.22 Q 1074.76 633.19 1068.66 645.96 Q 1064.84 653.95 1057.15 656.28 Q 1053.75 657.30 1041.27 657.26 Q 1010.17 657.14 971.13 657.20 A 1.37 1.37 0.0 0 1 969.84 655.35 Q 970.18 654.41 973.52 646.78 Q 1009.89 563.77 1018.32 545.31 C 1021.51 538.35 1020.43 532.34 1011.36 532.36 Q 991.18 532.38 896.73 532.34 Q 891.30 532.33 889.29 533.00 C 883.99 534.77 880.56 539.42 878.15 544.39 Q 873.97 552.97 865.49 571.97 Q 841.93 624.83 815.41 683.88 Q 813.43 688.27 808.75 692.51 Q 803.99 696.83 795.77 696.82 Q 720.99 696.82 717.53 696.77 Q 716.81 696.76 716.23 696.56 A 1.32 1.32 0.0 0 1 715.46 694.77 Q 725.14 673.46 735.10 650.61 C 751.63 612.69 766.76 579.13 782.29 543.80 Q 808.04 485.19 845.66 403.63 Q 850.15 393.89 859.11 390.59 Q 863.28 389.06 874.05 389.08 Q 938.38 389.20 944.75 389.12 Q 945.47 389.11 946.01 389.33 Z" />
+        <path class="logo-shape" d="M 1292.32 562.16 A 0.84 0.84 0.0 0 1 1292.84 563.22 C 1290.19 571.31 1285.62 580.20 1277.25 583.17 Q 1273.94 584.35 1264.13 584.34 Q 1238.52 584.32 1181.49 584.31 Q 1175.03 584.31 1172.70 585.15 C 1166.33 587.44 1165.08 592.26 1161.45 599.85 C 1159.59 603.75 1159.05 608.37 1164.65 608.39 Q 1212.94 608.49 1251.25 608.43 C 1262.93 608.41 1270.01 615.76 1266.15 627.42 Q 1264.90 631.18 1261.41 639.19 Q 1256.22 651.07 1245.84 674.89 Q 1240.91 686.21 1237.27 689.75 Q 1230.00 696.81 1220.01 696.81 Q 993.43 696.83 956.75 696.81 Q 955.26 696.81 954.14 696.65 A 0.86 0.86 0.0 0 1 953.46 695.48 Q 954.71 692.37 957.54 686.85 Q 963.18 675.86 973.91 672.05 Q 977.79 670.67 992.26 670.68 Q 1100.20 670.73 1187.46 670.72 Q 1195.34 670.72 1198.31 669.28 Q 1202.96 667.02 1205.46 661.20 C 1206.87 657.94 1209.73 650.53 1212.46 645.06 C 1215.67 638.63 1215.92 632.56 1206.78 632.56 Q 1198.62 632.55 1117.28 632.59 Q 1112.87 632.59 1109.39 631.34 A 2.30 2.29 -72.4 0 1 1107.96 628.57 Q 1108.97 624.94 1110.57 621.35 Q 1123.14 593.14 1126.59 584.90 Q 1130.60 575.35 1134.23 571.45 Q 1143.17 561.89 1156.48 562.04 Q 1162.89 562.11 1257.25 562.05 Q 1286.45 562.03 1291.73 562.11 Q 1292.20 562.12 1292.32 562.16 Z" />
+      </svg>
 
       <section class="hero-copy">
-        <h1><span>HUANRUI</span><span>STUDIO</span></h1>
+        <h1>
+          <span class="title-word word-huanrui" aria-label="HUANRUI"><span class="title-letter letter-h" data-letter="H" aria-hidden="true">H</span><span class="title-letter" data-letter="U" aria-hidden="true">U</span><span class="title-letter" data-letter="A" aria-hidden="true">A</span><span class="title-letter" data-letter="N" aria-hidden="true">N</span><span class="title-letter" data-letter="R" aria-hidden="true">R</span><span class="title-letter" data-letter="U" aria-hidden="true">U</span><span class="title-letter" data-letter="I" aria-hidden="true">I</span></span>
+          <span class="title-word word-studio" aria-label="STUDIO"><span class="title-letter letter-s" data-letter="S" aria-hidden="true">S</span><span class="title-letter" data-letter="T" aria-hidden="true">T</span><span class="title-letter" data-letter="U" aria-hidden="true">U</span><span class="title-letter" data-letter="D" aria-hidden="true">D</span><span class="title-letter" data-letter="I" aria-hidden="true">I</span><span class="title-letter" data-letter="O" aria-hidden="true">O</span></span>
+        </h1>
         <p class="manifesto">Breathe design&nbsp;&nbsp;Dream in design&nbsp;&nbsp;Being a designer<span class="manifesto-line">is a lifestyle</span></p>
       </section>
 
-      <a class="racetrack" href="portfolio.html" aria-label="Enter portfolio categories">explore my world</a>
+      <a class="racetrack" href="portfolio.html" aria-label="Enter portfolio categories"><span class="cta-label">explore my world</span></a>
     </main>
-    <script src="script.js"></script>
+    <script src="script.js?v=20260804-12"></script>
   </body>
 </html>
