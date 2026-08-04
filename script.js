@@ -76,11 +76,37 @@ function finishVideoTransition() {
 function playVideoTransition() {
   if (!transitionVideo || !document.body.classList.contains('is-fading')) return;
 
-  document.body.classList.add('is-video-playing');
+  document.body.classList.add('is-video-warming');
   transitionVideo.currentTime = 0;
+  const showDecodedFirstFrame = () => {
+    transitionVideo.pause();
+
+    let revealed = false;
+    const revealAndPlay = () => {
+      if (revealed) return;
+      revealed = true;
+      document.body.classList.remove('is-video-warming');
+      document.body.classList.add('is-video-playing');
+      transitionVideo.play().catch(() => {
+        document.body.classList.remove('is-video-playing');
+        window.setTimeout(enterPortfolio, 3550);
+      });
+    };
+
+    // Resetting after the initial hidden playback leaves the true video frame 0
+    // decoded and ready before it becomes visible on iOS Safari.
+    transitionVideo.addEventListener('seeked', revealAndPlay, { once: true });
+    transitionVideo.currentTime = 0;
+    // Some mobile Safari versions do not dispatch seeked when the current frame
+    // is already exactly zero. The hidden playing frame is still decoded, so this
+    // prevents the transition from waiting indefinitely.
+    window.setTimeout(revealAndPlay, 160);
+  };
+
+  transitionVideo.addEventListener('playing', showDecodedFirstFrame, { once: true });
   transitionVideo.play().catch(() => {
     // Preserve the existing CSS transition if video playback is unavailable.
-    document.body.classList.remove('is-video-playing');
+    document.body.classList.remove('is-video-warming');
     window.setTimeout(enterPortfolio, 3550);
   });
 }
@@ -106,7 +132,7 @@ function beginFadeTransition(event) {
 racetrack?.addEventListener('click', beginFadeTransition);
 transitionVideo?.addEventListener('ended', finishVideoTransition);
 window.addEventListener('pageshow', () => {
-  document.body.classList.remove('is-fading', 'is-video-playing', 'is-video-ending');
+  document.body.classList.remove('is-fading', 'is-video-warming', 'is-video-playing', 'is-video-ending');
   if (transitionVideo) {
     transitionVideo.pause();
     transitionVideo.currentTime = 0;
