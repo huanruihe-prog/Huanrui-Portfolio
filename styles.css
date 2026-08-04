@@ -42,6 +42,12 @@ body.is-video-ending .transition-video { opacity: 0; transition: opacity .72s cu
 /* The previous CSS logo construction remains as a playback fallback only. Keep it
    fully suppressed while the real video is visible, including its final fade. */
 body.is-video-playing .retained-letter, body.is-video-playing .h-construction, body.is-video-playing .transition-logo { opacity: 0 !important; animation: none !important; }
+/* Keep the original H and S in place through the black fade. Replacing them with
+   positioned copies was the source of the mobile hand-off jump. */
+body.is-fading .hero-copy { z-index: 7; }
+body.is-fading .title-letter:not(.letter-h):not(.letter-s), body.is-fading .manifesto { opacity: 0; transition: opacity .75s ease; }
+body.is-fading .retained-letter { opacity: 0 !important; animation: none !important; }
+body.is-video-playing .hero-copy { opacity: 0; }
 .hero-copy { position: absolute; z-index: 2; left: 50%; top: 46%; transform: translate(-50%, -50%); width: min(100% - 60px, 1100px); text-align: center; pointer-events: none; }
 .eyebrow { margin: 0 0 17px; color: var(--muted); font: 500 10px/1.35 "DM Mono", monospace; letter-spacing: .08em; }
 .hero h1 { margin: 0; font-size: clamp(4.4rem, 13.65vw, 13.7rem); font-weight: 700; line-height: .75; letter-spacing: -.1em; text-align: center; }
