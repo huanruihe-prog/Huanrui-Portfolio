@@ -87,10 +87,13 @@ function playVideoTransition() {
       revealed = true;
       document.body.classList.remove('is-video-warming');
       document.body.classList.add('is-video-playing');
-      transitionVideo.play().catch(() => {
-        document.body.classList.remove('is-video-playing');
-        window.setTimeout(enterPortfolio, 3550);
-      });
+      // Let iOS paint the decoded frame 0 before playback advances to frame 1.
+      window.setTimeout(() => {
+        transitionVideo.play().catch(() => {
+          document.body.classList.remove('is-video-playing');
+          window.setTimeout(enterPortfolio, 3550);
+        });
+      }, 100);
     };
 
     // Resetting after the initial hidden playback leaves the true video frame 0
