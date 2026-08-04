@@ -133,10 +133,13 @@ body.is-fading .transition-logo { animation: logo-form-and-leave 2.2s cubic-bezi
 
 /* Touch layouts use a full crossfade: the black curtain covers the complete
    home page while the held first frame of the transition video fades in. */
-@media (max-width: 1024px) {
+@media (max-width: 1024px) and (pointer: coarse) {
   .transition-video, .home .hero-copy { will-change: opacity; }
-  body.is-fading .hero-copy { opacity: 0; transition: opacity 1s ease; }
-  body.is-video-playing:not(.is-video-ending) .transition-video { transition: opacity 1s ease; }
+  body.is-fading .fade-curtain { transition-duration: 1.3s; }
+  body.is-fading .hero-copy { opacity: 0; transition: opacity 1.3s ease; }
+  body.is-fading .title-letter:not(.letter-h):not(.letter-s),
+  body.is-fading .manifesto { transition-duration: 1.3s; }
+  body.is-video-playing:not(.is-video-ending) .transition-video { transition: opacity 1.3s ease; }
 }
 
 @media (prefers-reduced-motion: reduce) {

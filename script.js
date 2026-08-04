@@ -18,7 +18,7 @@ const videoFrame = {
 };
 
 function usesTouchCrossfade() {
-  return window.matchMedia('(max-width: 1024px)').matches;
+  return window.matchMedia('(max-width: 1024px) and (pointer: coarse)').matches;
 }
 
 function placeRetainedCopy(source, copy) {
@@ -98,7 +98,7 @@ function playVideoTransition() {
           document.body.classList.remove('is-video-playing');
           window.setTimeout(enterPortfolio, 3550);
         });
-      }, usesTouchCrossfade() ? 1000 : 100);
+      }, usesTouchCrossfade() ? 1300 : 100);
     };
 
     // Resetting after the initial hidden playback leaves the true video frame 0
