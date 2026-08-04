@@ -18,7 +18,7 @@ const videoFrame = {
 };
 
 function usesTouchCrossfade() {
-  return window.matchMedia('(max-width: 1024px) and (pointer: coarse)').matches;
+  return window.matchMedia('(pointer: coarse)').matches;
 }
 
 function placeRetainedCopy(source, copy) {
